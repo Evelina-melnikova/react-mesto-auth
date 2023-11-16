@@ -1,0 +1,7 @@
+.page {
+    max-width: 1280px;
+    background: #000;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
