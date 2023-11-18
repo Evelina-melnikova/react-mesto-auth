@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { getToken, removeToken, setToken } from '../utils/token';
 import '../index.css';
 import Header from './header';
 import Main from './main';
@@ -11,8 +13,11 @@ import CardsContext from '../contexts/Cards.Context';
 import EditProfilePopup from './edit-profile-popup';
 import EditAvatarPopup from './edit-avatar-popup';
 import DeletePopup from './delete-popup';
-
-
+import * as ApiAuth from '../utils/ApiAuth';
+import WithRoute from './with-route';
+import Login from './login';
+import InfoToolTip from './info-tool-tip';
+import Register from './register';
 
 export default function App() {
   const [isEditProfilePopupOpen, setEditProfilePopup] = useState(false);
@@ -24,6 +29,15 @@ export default function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [cards, setCards] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
+  const [userEmail, setUserEmail] = useState('');
+  const navigate = useNavigate();
+  const navigateRef = useRef(navigate);
+  const [isToolTipOpen, setIsToolTipOpen] = useState(false);
+  const [isSucsessed, setIsSucsessed] = useState(false);
+  const [isloggedIn, setIsLoggedIn] = useState(false);
+  const [error, setError] = useState({});
+
+
 
 
   const handleEditAvatarClick = () => {
@@ -49,7 +63,59 @@ export default function App() {
     setSelectedDeleteCard({});
     setAddCardsPopup(false);
     setDeletePopup(false);
+    setIsToolTipOpen(false);
   }
+
+  const auth = useCallback(async (jwt) => {
+    try {
+      const res = await ApiAuth.getContent(jwt);
+      if (res) {
+        setIsLoggedIn(true);
+        setUserEmail(res.data.email);
+        navigate('/');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [setIsLoggedIn, setUserEmail, navigate]);
+
+  const onRegister = (password, email) => {
+    return ApiAuth.register(password, email).then((res) => {
+      setIsSucsessed(true);
+      setIsToolTipOpen(true);
+      return res;
+    }).catch((error) => {
+      setIsSucsessed(false);
+      setIsToolTipOpen(true);
+      setError(error);
+    })
+  }
+
+  const onSignOut = () => {
+    removeToken();
+    setUserEmail('');
+    setIsLoggedIn(false);
+    navigate('/login');
+  };
+
+  const onLogin = (password, email) => {
+    return ApiAuth.authorize(password, email)
+      .then((data) => {
+        if (data.token) {
+          setToken(data.token);
+          setIsLoggedIn(true);
+          navigate('/');
+          return data;
+        } else {
+          return;
+        }
+      }).catch((error) => {
+        setIsSucsessed(false);
+        setIsToolTipOpen(true);
+        setError(error);
+      })
+  }
+
 
   function showLoader() {
     setIsLoading(true);
@@ -143,7 +209,7 @@ export default function App() {
       .catch((err) => {
         console.log(err);
       });
-      
+
     api.getAllCards()
       .then(data => {
         setCards(data);
@@ -153,24 +219,60 @@ export default function App() {
       });
   }, []);
 
+
+
+  useEffect(() => {
+    const jwt = getToken();
+
+    if (jwt) {
+      auth(jwt);
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    const initialRoute = '/';
+    navigateRef.current(initialRoute);
+  }, []);
+
+
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
         <CardsContext.Provider value={cards}>
+
           <div className="page">
-            <Header />
-            <Main
-            cards={cards}
-            currentUser={currentUser}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddCardsClick}
-              onEditAvatar={handleEditAvatarClick}
-              onDeletePopup={handleDeletePopupClick}
-              onSelectDeleteCard={setSelectedDeleteCard}
-              onCardClick={setSelectedCard}
-              onCardLike={handleCardLike}
-            />
-            <Footer />
+            <Header email={userEmail} onSignOut={onSignOut} />
+            <Routes>
+              <Route path='/' element={<WithRoute
+                loggedIn={isloggedIn}
+                element={Main}
+                cards={cards}
+                currentUser={currentUser}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddCardsClick}
+                onEditAvatar={handleEditAvatarClick}
+                onDeletePopup={handleDeletePopupClick}
+                onSelectDeleteCard={setSelectedDeleteCard}
+                onCardClick={setSelectedCard}
+                onCardLike={handleCardLike}
+              />} />
+              <Route path='/sign-up'
+                element={<Register
+                  onRegister={onRegister}
+                  isSucsessed={isSucsessed}
+                  onClose={closeAllPopups}
+                  isOpen={isToolTipOpen}
+                />} />
+              <Route path='/sign-in'
+                element={<Login
+                  onLogin={onLogin}
+                  onClose={closeAllPopups}
+                  isOpen={isToolTipOpen}
+                  isloggedIn={isloggedIn}
+                />} />
+            </Routes>
+            {isloggedIn && <Footer />}
+
           </div>
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
@@ -184,7 +286,7 @@ export default function App() {
             onUpdateAvatar={handleUpdateAvatar}
             onLoading={isLoading}
           />
-             <AddPlacePopup
+          <AddPlacePopup
             isOpen={isAddCardsPopupOpen}
             onClose={closeAllPopups}
             onAddCard={handleAddCard}
@@ -201,9 +303,14 @@ export default function App() {
             card={selectedDeleteCard}
             onLoading={isLoading}
           />
-         
+          <InfoToolTip
+            isSucsessed={isSucsessed}
+            isOpen={isToolTipOpen}
+            onClose={closeAllPopups}
+            error={error}
+          />
         </CardsContext.Provider>
       </CurrentUserContext.Provider>
-</>
-          )
+    </>
+  )
 }

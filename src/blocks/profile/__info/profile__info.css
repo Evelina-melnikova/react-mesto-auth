@@ -8,7 +8,7 @@
 }
 
 
-@media screen and (max-width:640px) {
+@media screen and (max-width:877px) {
     .profile__info {
         justify-content: center;
         padding-left: 0;

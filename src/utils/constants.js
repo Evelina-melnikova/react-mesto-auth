@@ -17,13 +17,14 @@
 // }
 
 
-// export const configValidation = {
-//     formSelector: '.popup__form',
-//     inputSelector: '.popup__input',
-//     submitButtonSelector: '.popup__save-button',
-//     inactiveButtonClass: 'popup__save-button-invalid',
-//     inputErrorClass: 'popup__input_type_error'
-// };
+export const configValidation = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__save-button-invalid',
+    inputErrorClass: 'popup__input_type_error'
+};
+
 
  const apiConfig = {
     url: 'https://mesto.nomoreparties.co/v1/cohort-76',
@@ -31,5 +32,6 @@
        authorization: '2c619271-7a2d-4266-95fe-47db284f8454',
        "Content-Type": "application/json",
      }
-}
+   }
+
 export default apiConfig;

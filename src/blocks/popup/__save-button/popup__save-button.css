@@ -17,6 +17,7 @@
     font-weight: 400;
     line-height: normal;
      margin-bottom: 37px;
+     font-family: 'Inter', sans-serif;
 }
 
 .popup__save-button:hover {
