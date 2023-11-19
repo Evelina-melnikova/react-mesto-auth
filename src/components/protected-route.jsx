@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-export default function WithRoute({ element: Component, ...props }) {
+export default function ProtectedRoute({ element: Component, ...props }) {
    return ( 
       props.loggedIn ? <Component {...props} /> : <Navigate to="/sign-in" replace />
    )

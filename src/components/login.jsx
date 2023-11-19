@@ -21,7 +21,8 @@ const Login = ({ onLogin }) => {
   return (
     <div className='login'>
       <h1 className='login__title'>Вход</h1>
-      <form className='login__form'>
+      <form className='login__form'
+       onSubmit={handleSubmit}>
         <div className="login__container login__container_input">
           <input
             name="email"
@@ -53,8 +54,7 @@ const Login = ({ onLogin }) => {
         <div className='login__container login__container_type-button'>
           <button
             className="login__submit-button"
-            type='submit'
-            onClick={handleSubmit}>
+            type='submit'>
             Войти
           </button>
         </div>

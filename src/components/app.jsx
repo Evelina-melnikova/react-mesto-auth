@@ -14,7 +14,7 @@ import EditProfilePopup from './edit-profile-popup';
 import EditAvatarPopup from './edit-avatar-popup';
 import DeletePopup from './delete-popup';
 import * as ApiAuth from '../utils/ApiAuth';
-import WithRoute from './with-route';
+import ProtectedRoute from './protected-route';
 import Login from './login';
 import InfoToolTip from './info-tool-tip';
 import Register from './register';
@@ -243,7 +243,7 @@ export default function App() {
           <div className="page">
             <Header email={userEmail} onSignOut={onSignOut} />
             <Routes>
-              <Route path='/' element={<WithRoute
+              <Route path='/' element={<ProtectedRoute
                 loggedIn={isloggedIn}
                 element={Main}
                 cards={cards}

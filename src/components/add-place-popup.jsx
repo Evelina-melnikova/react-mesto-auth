@@ -39,7 +39,6 @@ export default function AddPlacePopup({ isOpen, onClose, onAddCard, onLoading })
       onLoading={onLoading}
       onSubmit={handleAddCardsSubmit}
     >
-      <>
         <input
           name="title"
           minLength={2}
@@ -56,8 +55,6 @@ export default function AddPlacePopup({ isOpen, onClose, onAddCard, onLoading })
           className="popup__error"
           id="title-error"
         />
-      </>
-      <>
         <input
           name="link"
           placeholder="Ссылка на картинку"
@@ -72,7 +69,6 @@ export default function AddPlacePopup({ isOpen, onClose, onAddCard, onLoading })
           className="popup__error"
           id="link-error"
         />
-      </>
     </PopupWithForm>
   )
 }

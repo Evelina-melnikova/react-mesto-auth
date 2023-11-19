@@ -29,7 +29,6 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onLoa
       onLoading={onLoading}
       onSubmit={handleSubmit}
     >
-      <>
         <input
           name="avatar"
           placeholder="Ссылка на картинку"
@@ -43,7 +42,6 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onLoa
           className="popup__error"
           id="avatar-errorr"
         />
-      </>
     </PopupWithForm>
   )
 }

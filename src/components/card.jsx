@@ -30,7 +30,7 @@ export default function Card({ card, onCardClick, onCardLike, onDeletePopup, onS
   return (
     <li className="elements__element-card">
       <div className="elements__element-group">
-      <img alt="Фотография: {card.name}" className="elements__element-img" src={card.link} onClick={handleClick} />
+      <img alt={`Фотография: ${card.name}`}   className="elements__element-img" src={card.link} onClick={handleClick} />
       {/* <button className="elements__element-delete" onClick={handleDeleteClick} type="button" /> */}
       {isOwn && <button className="elements__element-delete" onClick={handleDeleteClick} />}
       </div>

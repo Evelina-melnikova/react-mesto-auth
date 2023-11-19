@@ -41,7 +41,6 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoad
       onLoading={onLoading}
       onSubmit={handleSubmit}
     >
-      <>
         <input
           name="name"
           minLength={2}
@@ -57,8 +56,6 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoad
           className="popup__error"
           id="name-error"
         />
-      </>
-      <>
         <input
           name="about"
           minLength={2}
@@ -74,7 +71,6 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoad
             className="popup__error"
             id="about-error"
         />
-      </>
     </PopupWithForm>
   )
 }

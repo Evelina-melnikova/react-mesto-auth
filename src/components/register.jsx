@@ -22,7 +22,8 @@ const Register = ({ onRegister }) => {
   return (
     <div className='register'>
       <h1 className='login__title'>Регистрация</h1>
-      <form className='login__form'>
+      <form className='login__form'
+       onSubmit={handleSubmit}>
         <div className="login__container login__container_input">
           <input
             name="email"
@@ -52,8 +53,7 @@ const Register = ({ onRegister }) => {
         <div className='login__container login__container_type-button'>
           <button
             className="login__submit-button"
-            type='submit'
-            onClick={handleSubmit}>
+            type='submit'>
             Зарегистрироваться
           </button>
           <p className='login__caption'>

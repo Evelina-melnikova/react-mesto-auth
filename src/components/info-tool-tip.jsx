@@ -6,12 +6,6 @@ function InfoToolTip({ isSucsessed, isOpen, onClose }) {
 
   return (
     <div className={`popup ${isOpen ? 'popup_opened' : ''}`}>
-       <button
-          className="popup__close-button popup__close-button_login"
-          type="button"
-          aria-label="Закрыть"
-          onClick={onClose}
-        />
       <div className={`popup__container_login`}>
         {isSucsessed && (<>
           <img src={tickImg} alt="галочка" className='popup__image-login' />
@@ -23,6 +17,12 @@ function InfoToolTip({ isSucsessed, isOpen, onClose }) {
             {'Что-то пошло не так! Попробуйте ещё раз.'}
           </p>
         </>)}
+        <button
+          className="popup__close-button popup__close-button_login"
+          type="button"
+          aria-label="Закрыть"
+          onClick={onClose}
+        />
       </div>
     </div>
   );
