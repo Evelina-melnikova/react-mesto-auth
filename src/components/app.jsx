@@ -84,10 +84,10 @@ export default function App() {
       setIsSucsessed(true);
       setIsToolTipOpen(true);
       return res;
-    }).catch((error) => {
+    }).catch((err) => {
       setIsSucsessed(false);
       setIsToolTipOpen(true);
-      setError(error);
+      setError(err);
     })
   }
 
@@ -109,10 +109,10 @@ export default function App() {
         } else {
           return;
         }
-      }).catch((error) => {
+      }).catch((err) => {
         setIsSucsessed(false);
         setIsToolTipOpen(true);
-        setError(error);
+        setError(err);
       })
   }
 
@@ -229,88 +229,88 @@ export default function App() {
     }
   }, [auth]);
 
-  useEffect(() => {
-    const initialRoute = '/';
-    navigateRef.current(initialRoute);
-  }, []);
+  // useEffect(() => {
+  //   const initialRoute = '/';
+  //   navigateRef.current(initialRoute);
+  // }, []);
 
 
   return (
-    <>
-      <CurrentUserContext.Provider value={currentUser}>
-        <CardsContext.Provider value={cards}>
+    <CurrentUserContext.Provider value={currentUser}>
+      <CardsContext.Provider value={cards}>
 
-          <div className="page">
-            <Header email={userEmail} onSignOut={onSignOut} />
-            <Routes>
-              <Route path='/' element={<ProtectedRoute
+        <div className="page">
+          <Header email={userEmail} onSignOut={onSignOut} />
+          <Routes>
+            <Route path='/'
+                element={<ProtectedRoute
                 loggedIn={isloggedIn}
                 element={Main}
                 cards={cards}
                 currentUser={currentUser}
                 onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddCardsClick}
                 onEditAvatar={handleEditAvatarClick}
-                onDeletePopup={handleDeletePopupClick}
                 onSelectDeleteCard={setSelectedDeleteCard}
                 onCardClick={setSelectedCard}
                 onCardLike={handleCardLike}
+                onAddPlace={handleAddCardsClick}
+                onDeletePopup={handleDeletePopupClick}
               />} />
-              <Route path='/sign-up'
-                element={<Register
-                  onRegister={onRegister}
-                  isSucsessed={isSucsessed}
-                  onClose={closeAllPopups}
-                  isOpen={isToolTipOpen}
-                />} />
-              <Route path='/sign-in'
-                element={<Login
-                  onLogin={onLogin}
-                  onClose={closeAllPopups}
-                  isOpen={isToolTipOpen}
-                  isloggedIn={isloggedIn}
-                />} />
-            </Routes>
-            {isloggedIn && <Footer />}
+            <Route path='/sign-up'
+              element={<Register
+                onRegister={onRegister}
+                isSucsessed={isSucsessed}
+                onClose={closeAllPopups}
+                isOpen={isToolTipOpen}
+              />} />
+            <Route path='/sign-in'
+              element={<Login
+                onLogin={onLogin}
+                onClose={closeAllPopups}
+                isOpen={isToolTipOpen}
+                isloggedIn={isloggedIn}
+              />} />
+              
+          </Routes>
+          {isloggedIn && <Footer />}
 
-          </div>
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onUpdateUser={handleUpdateUser}
-            onLoading={isLoading}
-          />
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-            onLoading={isLoading}
-          />
-          <AddPlacePopup
-            isOpen={isAddCardsPopupOpen}
-            onClose={closeAllPopups}
-            onAddCard={handleAddCard}
-            onLoading={isLoading}
-          />
-          <ImagePopup
-            card={selectedCard}
-            onClose={closeAllPopups}
-          />
-          <DeletePopup
-            isOpen={isDeletePopupOpen}
-            onClose={closeAllPopups}
-            onDeleteCard={handleCardDelete}
-            card={selectedDeleteCard}
-            onLoading={isLoading}
-          />
-          <InfoToolTip
-            isSucsessed={isSucsessed}
-            isOpen={isToolTipOpen}
-            onClose={closeAllPopups}
-            error={error}
-          />
-        </CardsContext.Provider>
-      </CurrentUserContext.Provider>
-    </>
+        </div>
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+          onLoading={isLoading}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+          onLoading={isLoading}
+        />
+        <AddPlacePopup
+          isOpen={isAddCardsPopupOpen}
+          onClose={closeAllPopups}
+          onAddCard={handleAddCard}
+          onLoading={isLoading}
+        />
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+        />
+        <DeletePopup
+          isOpen={isDeletePopupOpen}
+          onClose={closeAllPopups}
+          onDeleteCard={handleCardDelete}
+          card={selectedDeleteCard}
+          onLoading={isLoading}
+        />
+        <InfoToolTip
+          isSucsessed={isSucsessed}
+          isOpen={isToolTipOpen}
+          onClose={closeAllPopups}
+          error={error}
+        />
+      </CardsContext.Provider>
+    </CurrentUserContext.Provider>
   )
 }
